@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Days Since Started Job</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        #daysSince {
+            font-size: 3em;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div id="daysSince">0 days</div>
+
+    <script>
+        function calculateDaysSince(startDate) {
+            const start = new Date(startDate);
+            const now = new Date();
+            const diffTime = Math.abs(now - start);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays;
+        }
+
+        const startDate = '2023-01-01'; // Replace this with your job start date
+        document.getElementById('daysSince').textContent = `${calculateDaysSince(startDate)} days`;
+    </script>
+</body>
+</html>
