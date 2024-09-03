@@ -8,6 +8,7 @@
         body {
             font-family: Arial, sans-serif;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
@@ -17,11 +18,28 @@
         #daysSince {
             font-size: 3em;
             color: #333;
+            margin-bottom: 20px;
+        }
+        #startDateInput, #generateLink {
+            padding: 10px;
+            margin: 5px;
+            font-size: 1em;
+        }
+        #generatedLink {
+            margin-top: 20px;
+            color: blue;
+            text-decoration: underline;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
     <div id="daysSince">0 days</div>
+
+    <input type="date" id="startDateInput" value="2023-01-01">
+    <button id="generateLink">Generate Widget Link</button>
+
+    <div id="generatedLink"></div>
 
     <script>
         function calculateDaysSince(startDate) {
@@ -32,8 +50,24 @@
             return diffDays;
         }
 
-        const startDate = '2023-01-01'; // Replace this with your job start date
-        document.getElementById('daysSince').textContent = `${calculateDaysSince(startDate)} days`;
+        function updateDaysSince() {
+            const startDate = new URLSearchParams(window.location.search).get('start');
+            if (startDate) {
+                document.getElementById('daysSince').textContent = `${calculateDaysSince(startDate)} days`;
+                document.getElementById('startDateInput').value = startDate;
+            }
+        }
+
+        function generateLink() {
+            const startDate = document.getElementById('startDateInput').value;
+            const link = `${window.location.origin}${window.location.pathname}?start=${startDate}`;
+            document.getElementById('generatedLink').innerHTML = `<a href="${link}" target="_blank">${link}</a>`;
+        }
+
+        document.getElementById('generateLink').addEventListener('click', generateLink);
+
+        // Initialize the widget with the current start date
+        updateDaysSince();
     </script>
 </body>
 </html>
