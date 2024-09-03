@@ -3,83 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Days Since Started Job</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f4f4f4;
-        }
-        #daysSince {
-            font-size: 3em;
-            color: #333;
-            margin-bottom: 20px;
-        }
-        #controls {
-            display: none;
-        }
-        #startDateInput, #generateLink {
-            padding: 10px;
-            margin: 5px;
-            font-size: 1em;
-        }
-        #generatedLink {
-            margin-top: 20px;
-            color: blue;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-    </style>
+    <title>Days Since Widget</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="daysSince">0 days</div>
-
-    <div id="controls">
-        <input type="date" id="startDateInput" value="2023-01-01">
-        <button id="generateLink">Generate Widget Link</button>
-        <div id="generatedLink"></div>
+    <div>
+        <h1 id="daysSince">0 days</h1>
+        <p id="event">since</p>
+        <div class="input">
+            <input type="date" id="startDateInput">
+            <input type="text" id="eventInput" placeholder="Enter event description">
+            <button id="updateButton">Update Widget</button>
+        </div>
+        <button id="copyLinkButton">Copy Widget Link</button>
+        <p id="errorMessage"></p>
+    </div>
+        </div>
+        <p id="errorMessage"> </p>
     </div>
 
-    <script>
-        function calculateDaysSince(startDate) {
-            const start = new Date(startDate);
-            const now = new Date();
-            const diffTime = Math.abs(now - start);
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            return diffDays;
-        }
-
-        function updateDaysSince() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const startDate = urlParams.get('start');
-            const isEditingMode = urlParams.get('edit');
-
-            if (startDate) {
-                document.getElementById('daysSince').textContent = `${calculateDaysSince(startDate)} days`;
-                if (isEditingMode) {
-                    document.getElementById('controls').style.display = 'block';
-                    document.getElementById('startDateInput').value = startDate;
-                }
-            } else {
-                document.getElementById('daysSince').textContent = 'Please provide a start date in the URL.';
-            }
-        }
-
-        function generateLink() {
-            const startDate = document.getElementById('startDateInput').value;
-            const link = `${window.location.origin}${window.location.pathname}?start=${startDate}`;
-            document.getElementById('generatedLink').innerHTML = `<a href="${link}&edit=true" target="_blank">${link}&edit=true</a>`;
-        }
-
-        document.getElementById('generateLink').addEventListener('click', generateLink);
-
-        // Initialize the widget
-        updateDaysSince();
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
