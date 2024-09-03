@@ -15,6 +15,10 @@ function updateWidget() {
         document.getElementById('errorMessage').textContent = ' ';
         document.getElementById('daysSince').textContent = `${daysSince} days`;
         document.getElementById('event').textContent = `since ${eventDescription}`;
+
+        // Generate the widget link
+        const widgetLink = `${window.location.origin}?start=${encodeURIComponent(startDate)}&event=${encodeURIComponent(eventDescription)}`;
+        document.getElementById('widgetLink').value = widgetLink;
     } else {
         document.getElementById('errorMessage').textContent = 'Please provide a start date and event description.';
         setTimeout(() => {
@@ -31,6 +35,9 @@ function copyLink() {
     
     // Optional: Show a message to indicate the link was copied
      document.getElementById('errorMessage').textContent = 'Widget link copied to clipboard!';
+     setTimeout(() => {
+        document.getElementById('errorMessage').textContent = ' ';
+    }, 5000);
 }
 
 document.getElementById('updateButton').addEventListener('click', updateWidget);
