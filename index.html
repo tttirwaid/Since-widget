@@ -20,6 +20,9 @@
             color: #333;
             margin-bottom: 20px;
         }
+        #controls {
+            display: none;
+        }
         #startDateInput, #generateLink {
             padding: 10px;
             margin: 5px;
@@ -36,10 +39,11 @@
 <body>
     <div id="daysSince">0 days</div>
 
-    <input type="date" id="startDateInput" value="2023-01-01">
-    <button id="generateLink">Generate Widget Link</button>
-
-    <div id="generatedLink"></div>
+    <div id="controls">
+        <input type="date" id="startDateInput" value="2023-01-01">
+        <button id="generateLink">Generate Widget Link</button>
+        <div id="generatedLink"></div>
+    </div>
 
     <script>
         function calculateDaysSince(startDate) {
@@ -51,22 +55,30 @@
         }
 
         function updateDaysSince() {
-            const startDate = new URLSearchParams(window.location.search).get('start');
+            const urlParams = new URLSearchParams(window.location.search);
+            const startDate = urlParams.get('start');
+            const isEditingMode = urlParams.get('edit');
+
             if (startDate) {
                 document.getElementById('daysSince').textContent = `${calculateDaysSince(startDate)} days`;
-                document.getElementById('startDateInput').value = startDate;
+                if (isEditingMode) {
+                    document.getElementById('controls').style.display = 'block';
+                    document.getElementById('startDateInput').value = startDate;
+                }
+            } else {
+                document.getElementById('daysSince').textContent = 'Please provide a start date in the URL.';
             }
         }
 
         function generateLink() {
             const startDate = document.getElementById('startDateInput').value;
             const link = `${window.location.origin}${window.location.pathname}?start=${startDate}`;
-            document.getElementById('generatedLink').innerHTML = `<a href="${link}" target="_blank">${link}</a>`;
+            document.getElementById('generatedLink').innerHTML = `<a href="${link}&edit=true" target="_blank">${link}&edit=true</a>`;
         }
 
         document.getElementById('generateLink').addEventListener('click', generateLink);
 
-        // Initialize the widget with the current start date
+        // Initialize the widget
         updateDaysSince();
     </script>
 </body>
